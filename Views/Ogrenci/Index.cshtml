@@ -2,7 +2,7 @@
 <h2>Öğrenci Listesi</h2>
 <a href="/Ogrenci/Create" class="btn btn-success">Ogrenci Ekle</a>
 <hr>
-    <table class="table">
+    <table class="table table-bordered">
     <thead>
         <tr>
             <!-- böylede yapılablir  @Html.DisplayNameFor(m=>m.OgrenciId) -->
@@ -22,8 +22,8 @@
                 <td>@ogrenci.OgrenciAd</td>
                 <td>@ogrenci.OgrencSoyadi</td>
                 <td>
-                    <a href="" class="btn btn-sm btn-success">Detay</a>
-                    <a href="" class="btn btn-sm btn-danger">Sil</a>
+                    <a asp-controller="Ogrenci" asp-action="Edit" asp-route-id="@ogrenci.OgrenciId" class="btn btn-sm btn-success">Güncele</a>
+                    <a asp-action="Delete" asp-route-id="@ogrenci.OgrenciId" class="btn btn-sm btn-danger">Sil</a>
                 </td>
             </tr>
         }

@@ -9,6 +9,7 @@
             <th style="width: 150px;">@Html.DisplayNameFor(m=>m.OgrenciId)</th>
             <th>Öğrenci Adı</th>
             <th>Öğrenci Soyadı</th>
+            <th>E-Posta</th>
             <th style="width: 150px;"></th>
    
         </tr>
@@ -21,6 +22,7 @@
                 <td>@Html.DisplayFor(modelItem=>ogrenci.OgrenciId)</td>
                 <td>@ogrenci.OgrenciAd</td>
                 <td>@ogrenci.OgrencSoyadi</td>
+                <td>@ogrenci.Eposta</td>
                 <td>
                     <a asp-controller="Ogrenci" asp-action="Edit" asp-route-id="@ogrenci.OgrenciId" class="btn btn-sm btn-success">Güncele</a>
                     <a asp-action="Delete" asp-route-id="@ogrenci.OgrenciId" class="btn btn-sm btn-danger">Sil</a>

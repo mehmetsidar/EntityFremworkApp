@@ -47,7 +47,11 @@ namespace EntityFremworkApp.Controllers
 
 
       // veritabınında böyle bir Id yoksa 404 hatası gönderir
-      var kurs = await _context.Kurslar.FindAsync(id);
+      var kurs = await _context
+                      .Kurslar
+                      .Include(k=>k.KursKayitleri)
+                      .ThenInclude(k=>k.Ogrenci)
+                      .FirstOrDefaultAsync(k=>k.KursId == id);
 
       if (kurs == null)
       {

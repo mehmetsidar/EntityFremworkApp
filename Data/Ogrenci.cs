@@ -17,5 +17,7 @@ namespace EntityFremworkApp.Data
         }
         public string? Eposta { get; set; }
         public string? Telefon { get; set; }
+
+        public ICollection<KursKayit> KursKayitleri {get;set;} =new List<KursKayit>();
     }
 }

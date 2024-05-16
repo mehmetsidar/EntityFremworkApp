@@ -42,7 +42,11 @@ namespace EntityFremworkApp.Controllers
 
 
          // veritabınında böyle bir Id yoksa 404 hatası gönderir
-        var ogr=await _context.Ogrenciler.FindAsync(id);
+        var ogr=await _context
+        .Ogrenciler
+        .Include(o => o.KursKayitleri)
+        .ThenInclude(o=>o.Kurs)
+        .FirstOrDefaultAsync(o=>o.OgrenciId==id);
 
          if(ogr ==null)
          {

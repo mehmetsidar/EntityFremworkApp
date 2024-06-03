@@ -1,4 +1,5 @@
 using EntityFremworkApp.Data;
+using EntityFremworkApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +18,13 @@ namespace EntityFremworkApp.Controllers
 
     public async Task<IActionResult> Index()
     {
-      var Kurslar = await _context.Kurslar.ToListAsync();
+      var Kurslar = await _context.Kurslar.Include(k => k.Ogretmen).ToListAsync();
       return View(Kurslar);
     }
 
     public async Task<IActionResult> Create()
     {
-      ViewBag.ogretmenler = new SelectList(await _context.Ogretmenler.ToListAsync(),"OgretmenId" , "AdSoyad");
+      ViewBag.ogretmenler = new SelectList(await _context.Ogretmenler.ToListAsync(), "OgretmenId", "AdSoyad");
       return View();
     }
 
@@ -51,14 +52,23 @@ namespace EntityFremworkApp.Controllers
       // veritabınında böyle bir Id yoksa 404 hatası gönderir
       var kurs = await _context
                       .Kurslar
-                      .Include(k=>k.KursKayitleri)
-                      .ThenInclude(k=>k.Ogrenci)
-                      .FirstOrDefaultAsync(k=>k.KursId == id);
+                      .Include(k => k.KursKayitleri)
+                      .ThenInclude(k => k.Ogrenci)
+                      .Select(k => new KursViewModel{
+                        KursId=k.KursId,
+                        Baslik=k.Baslik,
+                        OgretmenId=k.OgretmenId,
+                        KursKayitleri=k.KursKayitleri
+                      })
+                      .FirstOrDefaultAsync(k => k.KursId == id);
 
       if (kurs == null)
       {
         return NotFound();
       }
+
+      ViewBag.ogretmenler = new SelectList(await _context.Ogretmenler.ToListAsync(), "OgretmenId", "AdSoyad");
+
 
       return View(kurs);
 
@@ -67,7 +77,7 @@ namespace EntityFremworkApp.Controllers
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, Kurs model)
+    public async Task<IActionResult> Edit(int id, KursViewModel model)
     {
       if (id != model.KursId)
       {
@@ -78,7 +88,7 @@ namespace EntityFremworkApp.Controllers
       {
         try
         {
-          _context.Update(model);
+          _context.Update(new Kurs() { KursId = model.KursId, Baslik = model.Baslik, OgretmenId = model.OgretmenId });
           //Günceleme kısmı burda olur
           await _context.SaveChangesAsync();
         }

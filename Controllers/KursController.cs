@@ -1,5 +1,6 @@
 using EntityFremworkApp.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFremworkApp.Controllers
@@ -20,8 +21,9 @@ namespace EntityFremworkApp.Controllers
       return View(Kurslar);
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+      ViewBag.ogretmenler = new SelectList(await _context.Ogretmenler.ToListAsync(),"OgretmenId" , "AdSoyad");
       return View();
     }
 

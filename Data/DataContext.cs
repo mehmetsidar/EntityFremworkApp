@@ -12,5 +12,7 @@ namespace EntityFremworkApp.Data
 
         public DbSet<Ogrenci> Ogrenciler =>Set<Ogrenci>();
         public DbSet<KursKayit> KursKayitleri =>Set<KursKayit>();
+
+        public DbSet<Ogretmen> Ogretmenler =>Set<Ogretmen>();
     }
 }
